@@ -6,18 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>威的个人博客</title>
+  <title>Vue.nextTick 的原理和用途 | 威的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前端，对新技术有更大的热情">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="威的个人博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="对于 Vue.nextTick 方法，自己有些疑惑。在查询了各种资料后，总结了一下其原理和用途，如有错误，请不吝赐教。 概览 官方文档说明：   用法：  在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。  疑问：   DOM 更新循环是指什么？ 下次更新循环是什么时候？ 修改数据之后使用，是加快了数据更新进度吗？ 在什么情况下要用到？">
+<meta name="keywords" content="vue,nextTick">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue.nextTick 的原理和用途">
+<meta property="og:url" content="http://yoursite.com/2018/01/29/Vue-nextTick-的原理和用途/index.html">
 <meta property="og:site_name" content="威的个人博客">
-<meta property="og:description" content="前端，对新技术有更大的热情">
+<meta property="og:description" content="对于 Vue.nextTick 方法，自己有些疑惑。在查询了各种资料后，总结了一下其原理和用途，如有错误，请不吝赐教。 概览 官方文档说明：   用法：  在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。  疑问：   DOM 更新循环是指什么？ 下次更新循环是什么时候？ 修改数据之后使用，是加快了数据更新进度吗？ 在什么情况下要用到？">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/Vue-nextTick-的原理和用途/event-loop.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/Vue-nextTick-的原理和用途/next-tick.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/Vue-nextTick-的原理和用途/next-tick-test.png">
+<meta property="og:updated_time" content="2018-01-29T10:36:48.654Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="威的个人博客">
-<meta name="twitter:description" content="前端，对新技术有更大的热情">
+<meta name="twitter:title" content="Vue.nextTick 的原理和用途">
+<meta name="twitter:description" content="对于 Vue.nextTick 方法，自己有些疑惑。在查询了各种资料后，总结了一下其原理和用途，如有错误，请不吝赐教。 概览 官方文档说明：   用法：  在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。  疑问：   DOM 更新循环是指什么？ 下次更新循环是什么时候？ 修改数据之后使用，是加快了数据更新进度吗？ 在什么情况下要用到？">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/29/Vue-nextTick-的原理和用途/event-loop.png">
   
     <link rel="alternative" href="/atom.xml" title="威的个人博客" type="application/atom+xml">
   
@@ -153,16 +158,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-Vue-nextTick-的原理和用途" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-Vue-nextTick-的原理和用途" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/29/Vue-nextTick-的原理和用途/">Vue.nextTick 的原理和用途</a>
+    <h1 class="article-title" itemprop="name">
+      Vue.nextTick 的原理和用途
     </h1>
   
 
@@ -192,9 +195,98 @@
 <li>修改数据之后使用，是加快了数据更新进度吗？</li>
 <li>在什么情况下要用到？</li>
 </ol>
-        
+<a id="more"></a>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="异步说明"><a href="#异步说明" class="headerlink" title="异步说明"></a>异步说明</h2><blockquote>
+<p>Vue 实现响应式并<strong>不是数据发生变化之后 DOM 立即变化</strong>，而是按一定的策略进行 DOM 的更新。</p>
+</blockquote>
+<p>在 Vue 的<a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97" target="_blank" rel="noopener">文档</a>中，说明 Vue 是<strong>异步</strong>执行 DOM 更新的。关于异步的解析，可以查看阮一峰老师的<a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="noopener">这篇文章</a>。截取关键部分如下：</p>
+<p>具体来说，异步执行的运行机制如下。</p>
+<blockquote>
+<p>（1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。<br>（2）主线程之外，还存在一个”任务队列”（task queue）。只要异步任务有了运行结果，就在”任务队列”之中放置一个事件。<br>（3）一旦”执行栈”中的所有同步任务执行完毕，系统就会读取”任务队列”，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。<br>（4）主线程不断重复上面的第三步。</p>
+</blockquote>
+<p>下图就是主线程和任务队列的示意图。</p>
+<p><img src="/2018/01/29/Vue-nextTick-的原理和用途/event-loop.png" alt=""></p>
+<h2 id="事件循环说明"><a href="#事件循环说明" class="headerlink" title="事件循环说明"></a>事件循环说明</h2><p>简单来说，Vue 在修改数据后，视图不会立刻更新，而是等<strong>同一事件循环</strong>中的所有数据变化完成之后，再统一进行视图更新。</p>
+<p><a href="https://www.zhihu.com/question/50879936" target="_blank" rel="noopener">知乎</a>上的例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//改变数据</span></span><br><span class="line">vm.message = <span class="string">'changed'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//想要立即使用更新后的DOM。这样不行，因为设置message后DOM还没有更新</span></span><br><span class="line"><span class="built_in">console</span>.log(vm.$el.textContent) <span class="comment">// 并不会得到'changed'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这样可以，nextTick里面的代码会在DOM更新后执行</span></span><br><span class="line">Vue.nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(vm.$el.textContent) <span class="comment">//可以得到'changed'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>图解：</p>
+<p><img src="/2018/01/29/Vue-nextTick-的原理和用途/next-tick.png" alt=""></p>
+<blockquote>
+<p>事件循环：</p>
+</blockquote>
+<p>第一个 tick（图例中第一个步骤，即’本次更新循环’）：</p>
+<ol>
+<li>首先修改数据，这是同步任务。同一事件循环的所有的同步任务都在主线程上执行，形成一个执行栈，此时还未涉及 DOM 。</li>
+<li>Vue 开启一个异步队列，并缓冲在此事件循环中发生的所有数据改变。如果同一个 watcher 被多次触发，只会被推入到队列中一次。</li>
+</ol>
+<p>第二个 tick（图例中第二个步骤，即’下次更新循环’）：</p>
+<p>同步任务执行完毕，开始执行异步 watcher 队列的任务，更新 DOM 。Vue 在内部尝试对异步队列使用原生的 Promise.then 和 MessageChannel 方法，如果执行环境不支持，会采用 setTimeout(fn, 0) 代替。</p>
+<p>第三个 tick（图例中第三个步骤）：</p>
+<p>此时就是文档所说的</p>
+<blockquote>
+<p>下次 DOM 更新循环结束之后</p>
+</blockquote>
+<p>此时通过 Vue.nextTick 获取到改变后的 DOM 。通过 setTimeout(fn, 0) 也可以同样获取到。</p>
+<hr>
+<p>简单总结事件循环：</p>
+<p>同步代码执行 -&gt; 查找异步队列，推入执行栈，执行Vue.nextTick[事件循环1] -&gt;查找异步队列，推入执行栈，执行Vue.nextTick[事件循环2]…</p>
+<p>总之，异步是单独的一个tick，不会和同步在一个 tick 里发生，也是 DOM 不会马上改变的原因。</p>
+<h1 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h1><blockquote>
+<p>应用场景：需要在视图更新之后，基于新的视图进行操作。</p>
+</blockquote>
+<h2 id="created-mounted"><a href="#created-mounted" class="headerlink" title="created, mounted"></a>created, mounted</h2><p>需要注意的是，在 created 和 mounted 阶段，如果需要操作渲染后的试图，也要使用 nextTick 方法。</p>
+<p>官方文档说明：</p>
+<blockquote>
+<p>注意 mounted 不会承诺所有的子组件也都一起被挂载。如果你希望等到整个视图都渲染完毕，可以用 vm.$nextTick 替换掉 mounted</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mounted: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.$nextTick(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Code that will run only after the</span></span><br><span class="line">    <span class="comment">// entire view has been rendered</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="其他应用场景"><a href="#其他应用场景" class="headerlink" title="其他应用场景"></a>其他应用场景</h2><p>其他应用场景如下三例：</p>
+<p>例子1：</p>
+<p>点击按钮显示原本以 v-show = false 隐藏起来的输入框，并获取焦点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">showsou()&#123;</span><br><span class="line">  <span class="keyword">this</span>.showit = <span class="literal">true</span> <span class="comment">//修改 v-show</span></span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">"keywords"</span>).focus()  <span class="comment">//在第一个 tick 里，获取不到输入框，自然也获取不到焦点</span></span><br><span class="line">&#125;</span><br><span class="line">修改为：</span><br><span class="line"></span><br><span class="line">showsou()&#123;</span><br><span class="line">  <span class="keyword">this</span>.showit = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">this</span>.$nextTick(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// DOM 更新了</span></span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"keywords"</span>).focus()</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例子2：</p>
+<p>点击获取元素宽度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;p ref=&quot;myWidth&quot; v-if=&quot;showMe&quot;&gt;&#123;&#123; message &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;button @click=&quot;getMyWidth&quot;&gt;获取p元素宽度&lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">getMyWidth() &#123;</span><br><span class="line">    this.showMe = true;</span><br><span class="line">    //this.message = this.$refs.myWidth.offsetWidth;</span><br><span class="line">    //报错 TypeError: this.$refs.myWidth is undefined</span><br><span class="line">    this.$nextTick(()=&gt;&#123;</span><br><span class="line">        //dom元素更新后执行，此时能拿到p元素的属性</span><br><span class="line">        this.message = this.$refs.myWidth.offsetWidth;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例子3：</p>
+<p>使用 swiper 插件通过 ajax 请求图片后的滑动问题。</p>
+<h2 id="实例理解-nextTick-应用"><a href="#实例理解-nextTick-应用" class="headerlink" title="实例理解 nextTick 应用"></a>实例理解 nextTick 应用</h2><p>下面的例子来自 <a href="https://www.cnblogs.com/hity-tt/p/6729118.html，" target="_blank" rel="noopener">https://www.cnblogs.com/hity-tt/p/6729118.html，</a> 稍有改动。各位可以复制运行一遍，加深理解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">            &lt;li class=&quot;example&quot; v-for=&quot;item in list1&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">            &lt;li class=&quot;example&quot; v-for=&quot;item in list2&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">        &lt;ol&gt;</span><br><span class="line">            &lt;li class=&quot;example&quot; v-for=&quot;item in list3&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/li&gt;</span><br><span class="line">        &lt;/ol&gt;</span><br><span class="line">        &lt;ol&gt;</span><br><span class="line">            &lt;li class=&quot;example&quot; v-for=&quot;item in list4&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/li&gt;</span><br><span class="line">        &lt;/ol&gt;</span><br><span class="line">        &lt;ol&gt;</span><br><span class="line">            &lt;li class=&quot;example&quot; v-for=&quot;item in list5&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/li&gt;</span><br><span class="line">        &lt;/ol&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            list1: [],</span><br><span class="line">            list2: [],</span><br><span class="line">            list3: [],</span><br><span class="line">            list4: [],</span><br><span class="line">            list5: []</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    created() &#123;</span><br><span class="line">        this.composeList12()</span><br><span class="line">        this.composeList34()</span><br><span class="line">        this.composeList5()</span><br><span class="line">        this.$nextTick(function() &#123;</span><br><span class="line">            // DOM 更新了</span><br><span class="line">            console.log(&apos;finished test &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        composeList12() &#123;</span><br><span class="line">            let me = this</span><br><span class="line">            let count = 10000</span><br><span class="line"></span><br><span class="line">            for (let i = 0; i &lt; count; i++) &#123;</span><br><span class="line">                this.$set(me.list1, i, &apos;I am a 测试信息～～啦啦啦&apos; + i)</span><br><span class="line">            &#125;</span><br><span class="line">            console.log(&apos;finished list1 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line"></span><br><span class="line">            for (let i = 0; i &lt; count; i++) &#123;</span><br><span class="line">                this.$set(me.list2, i, &apos;I am a 测试信息～～啦啦啦&apos; + i)</span><br><span class="line">            &#125;</span><br><span class="line">            console.log(&apos;finished list2 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line"></span><br><span class="line">            this.$nextTick(function() &#123;</span><br><span class="line">                // DOM 更新了</span><br><span class="line">                console.log(&apos;finished tick1&amp;2 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;,</span><br><span class="line">        composeList34() &#123;</span><br><span class="line">            let me = this</span><br><span class="line">            let count = 10000</span><br><span class="line"></span><br><span class="line">            for (let i = 0; i &lt; count; i++) &#123;</span><br><span class="line">                this.$set(me.list3, i, &apos;I am a 测试信息～～啦啦啦&apos; + i)</span><br><span class="line">            &#125;</span><br><span class="line">            console.log(&apos;finished list3 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line"></span><br><span class="line">            this.$nextTick(function() &#123;</span><br><span class="line">                // DOM 更新了</span><br><span class="line">                console.log(&apos;finished tick3 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">            setTimeout(me.setTimeout1, 0)</span><br><span class="line">        &#125;,</span><br><span class="line">        setTimeout1() &#123;</span><br><span class="line">            let me = this</span><br><span class="line">            let count = 10000</span><br><span class="line"></span><br><span class="line">            for (let i = 0; i &lt; count; i++) &#123;</span><br><span class="line">                this.$set(me.list4, i, &apos;I am a 测试信息～～啦啦啦&apos; + i)</span><br><span class="line">            &#125;</span><br><span class="line">            console.log(&apos;finished list4 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line"></span><br><span class="line">            me.$nextTick(function() &#123;</span><br><span class="line">                // DOM 更新了</span><br><span class="line">                console.log(&apos;finished tick4 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;,</span><br><span class="line">        composeList5() &#123;</span><br><span class="line">            let me = this</span><br><span class="line">            let count = 10000</span><br><span class="line"></span><br><span class="line">            this.$nextTick(function() &#123;</span><br><span class="line">                // DOM 更新了</span><br><span class="line">                console.log(&apos;finished tick5-1 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">            setTimeout(me.setTimeout2, 0)</span><br><span class="line">        &#125;,</span><br><span class="line">        setTimeout2() &#123;</span><br><span class="line">            let me = this</span><br><span class="line">            let count = 10000</span><br><span class="line"></span><br><span class="line">            for (let i = 0; i &lt; count; i++) &#123;</span><br><span class="line">                this.$set(me.list5, i, &apos;I am a 测试信息～～啦啦啦&apos; + i)</span><br><span class="line">            &#125;</span><br><span class="line">            console.log(&apos;finished list5 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line"></span><br><span class="line">            me.$nextTick(function() &#123;</span><br><span class="line">                // DOM 更新了</span><br><span class="line">                console.log(&apos;finished tick5 &apos; + new Date().toString(),document.querySelectorAll(&apos;.example&apos;).length)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<p><img src="/2018/01/29/Vue-nextTick-的原理和用途/next-tick-test.png" alt=""></p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="https://www.cnblogs.com/hity-tt/p/6729118.html" target="_blank" rel="noopener">vue nextTick深入理解－vue性能优化、DOM更新时机、事件循环机制；</a><br><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="noopener">JavaScript 运行机制详解：再谈Event Loop</a><br><a href="https://www.zhihu.com/question/50879936" target="_blank" rel="noopener">知乎：vue.js$nextTick的一个问题</a><br><a href="http://www.cnblogs.com/hity-tt/p/6733062.html" target="_blank" rel="noopener">JS 事件循环机制 - 任务队列、web API、JS主线程的相互协同</a></p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢打赏<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weChat.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -218,16 +310,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/29/Vue-nextTick-的原理和用途/">显示全部 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/01/29/Vue-nextTick-的原理和用途/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/01/29/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -247,79 +398,14 @@
 
 
 
-
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/29/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2018/01/29/hello-world/" class="archive-article-date">
-  	<time datetime="2018-01-29T03:27:25.394Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/29/hello-world/">显示全部 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
 
   
+
   
 
 
@@ -342,8 +428,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
