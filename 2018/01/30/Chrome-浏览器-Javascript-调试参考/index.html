@@ -67,7 +67,7 @@
 		  <h1 class="header-author"><a href="/">威</a></h1>
 		</hgroup>
 		
-		<p class="header-subtitle">文章与随笔</p>
+		<p class="header-subtitle">把需要思考的事情集中思考，不需要思考的事情就不要想</p>
 		
 
 		<nav class="header-menu">
@@ -83,10 +83,6 @@
     		
     			
     			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
     			
             
     			
@@ -125,7 +121,7 @@
 			  <h1 class="header-author js-header-author">威</h1>
 			</hgroup>
 			
-			<p class="header-subtitle"><i class="icon icon-quo-left"></i>文章与随笔<i class="icon icon-quo-right"></i></p>
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>把需要思考的事情集中思考，不需要思考的事情就不要想<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -421,6 +417,19 @@
         </div>
         
         
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1、调试图标概览"><span class="toc-number">1.</span> <span class="toc-text">1、调试图标概览</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pause-Resume-script-execution（-F8）"><span class="toc-number">2.</span> <span class="toc-text">Pause/Resume script execution（ F8）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Step-over-next-function-call-（F10）"><span class="toc-number">3.</span> <span class="toc-text">Step over next function call （F10）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Step-into-next-function-call-（-F11）"><span class="toc-number">4.</span> <span class="toc-text">Step into next function call （ F11）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Step-out-of-current-function-（Shift-F8）"><span class="toc-number">5.</span> <span class="toc-text">Step out of current function （Shift + F8）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2、调试区域其他功能概览"><span class="toc-number">6.</span> <span class="toc-text">2、调试区域其他功能概览</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Run-all-code-up-to-a-certain-line"><span class="toc-number">7.</span> <span class="toc-text">Run all code up to a certain line</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#View-the-current-call-stack"><span class="toc-number">8.</span> <span class="toc-text">View the current call stack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Copy-stack-trace"><span class="toc-number">9.</span> <span class="toc-text">Copy stack trace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Restart-the-top-function-of-the-call-stack"><span class="toc-number">10.</span> <span class="toc-text">Restart the top function of the call stack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ignore-a-script-or-pattern-of-scripts"><span class="toc-number">11.</span> <span class="toc-text">Ignore a script or pattern of scripts</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Change-thread-context"><span class="toc-number">12.</span> <span class="toc-text">Change thread context</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#View-and-edit-local-closure-and-global-properties"><span class="toc-number">13.</span> <span class="toc-text">View and edit local, closure, and global properties</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Run-snippets-of-debug-code-from-any-page"><span class="toc-number">14.</span> <span class="toc-text">Run snippets of debug code from any page</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Watch-the-values-of-custom-JavaScript-expressions"><span class="toc-number">15.</span> <span class="toc-text">Watch the values of custom JavaScript expressions</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Make-a-minified-file-readable"><span class="toc-number">16.</span> <span class="toc-text">Make a minified file readable</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Edit-a-script"><span class="toc-number">17.</span> <span class="toc-text">Edit a script</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
     </div>
 </aside>
 
@@ -465,7 +474,7 @@
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -488,25 +497,17 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
       
     
-      
-      
-      
-    
     
 
     <ul style="width: 70%">
     
     
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
       
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
-      
-        
-      
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
       
         
     </ul>
@@ -543,11 +544,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">修饰符</a>
+                <a href="javascript:void(0)" class="js-tag color4">nextTick</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">nextTick</a>
+                <a href="javascript:void(0)" class="js-tag color4">修饰符</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,10 +606,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     	</section>
     
 
-    
-    	<section class="tools-section tools-section-friends" q-show="friends">
-  		
-    	</section>
     
 
     
