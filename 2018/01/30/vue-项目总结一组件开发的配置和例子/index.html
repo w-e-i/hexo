@@ -8,22 +8,29 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>vue 项目总结一组件开发的配置和例子 | 威的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="上一篇文章 https://segmentfault.com/a/1190000012392160?_ea=2986204 介绍了项目里文件夹的分类和作用，这次主要说明 src 文件夹里具体的文件分类和内容。  先上 src 文件夹的结构图：  文件及文件夹作用 App.vue App.vue: 根组件，pages 里的组件会被插入此组件中，此组件再插入 index.html 文件里，形成单页面应">
+  <meta name="description" content="上一篇文章 https://segmentfault.com/a/1190000012392160?_ea=2986204 介绍了项目里文件夹的分类和作用，这次主要说明 src 文件夹里具体的文件分类和内容。  先上 src 文件夹的结构图：">
 <meta name="keywords" content="vue,项目结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue 项目总结一组件开发的配置和例子">
 <meta property="og:url" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/index.html">
 <meta property="og:site_name" content="威的个人博客">
-<meta property="og:description" content="上一篇文章 https://segmentfault.com/a/1190000012392160?_ea=2986204 介绍了项目里文件夹的分类和作用，这次主要说明 src 文件夹里具体的文件分类和内容。  先上 src 文件夹的结构图：  文件及文件夹作用 App.vue App.vue: 根组件，pages 里的组件会被插入此组件中，此组件再插入 index.html 文件里，形成单页面应">
+<meta property="og:description" content="上一篇文章 https://segmentfault.com/a/1190000012392160?_ea=2986204 介绍了项目里文件夹的分类和作用，这次主要说明 src 文件夹里具体的文件分类和内容。  先上 src 文件夹的结构图：">
+<meta property="og:locale" content="zh">
 <meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/src.png">
 <meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/assets.png">
 <meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/components.png">
 <meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/http.png">
 <meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/http-instance.png">
-<meta property="og:updated_time" content="2018-01-30T03:36:36.671Z">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/mixin.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/store.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/store-vuex.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/store-modules.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/sign-in.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/index.png">
+<meta property="og:updated_time" content="2018-01-30T07:19:16.586Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue 项目总结一组件开发的配置和例子">
-<meta name="twitter:description" content="上一篇文章 https://segmentfault.com/a/1190000012392160?_ea=2986204 介绍了项目里文件夹的分类和作用，这次主要说明 src 文件夹里具体的文件分类和内容。  先上 src 文件夹的结构图：  文件及文件夹作用 App.vue App.vue: 根组件，pages 里的组件会被插入此组件中，此组件再插入 index.html 文件里，形成单页面应">
+<meta name="twitter:description" content="上一篇文章 https://segmentfault.com/a/1190000012392160?_ea=2986204 介绍了项目里文件夹的分类和作用，这次主要说明 src 文件夹里具体的文件分类和内容。  先上 src 文件夹的结构图：">
 <meta name="twitter:image" content="http://yoursite.com/2018/01/30/vue-项目总结一组件开发的配置和例子/src.png">
   
     <link rel="alternative" href="/atom.xml" title="威的个人博客" type="application/atom+xml">
@@ -183,7 +190,7 @@
         <p>上一篇文章 <a href="https://segmentfault.com/a/1190000012392160?_ea=2986204" target="_blank" rel="noopener">https://segmentfault.com/a/1190000012392160?_ea=2986204</a> 介绍了项目里文件夹的分类和作用，这次主要说明 src 文件夹里具体的文件分类和内容。</p>
 <hr>
 <p>先上 src 文件夹的结构图：</p>
-<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/src.png" alt=""></p>
+<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/src.png" alt=""><br><a id="more"></a></p>
 <h1 id="文件及文件夹作用"><a href="#文件及文件夹作用" class="headerlink" title="文件及文件夹作用"></a>文件及文件夹作用</h1><hr>
 <h1 id="App-vue"><a href="#App-vue" class="headerlink" title="App.vue"></a>App.vue</h1><blockquote>
 <p>App.vue: 根组件，pages 里的组件会被插入此组件中，此组件再插入 index.html 文件里，形成单页面应用</p>
@@ -237,13 +244,13 @@
 <h1 id="mixins-文件夹"><a href="#mixins-文件夹" class="headerlink" title="mixins 文件夹"></a>mixins 文件夹</h1><blockquote>
 <p>mixins: 放置混合选项的文件。具体来说，相当于是公用函数的集合，在组件中引用时，可以作用于组件而不必书写重复的方法</p>
 </blockquote>
-<p>个人认为，相当于是没有 <template> 和 <style> 的组件，例子如下：</p>
-<p><img src="mixin.png" alt=""></p>
+<p>个人认为，相当于是没有&lt;template/&gt; 和 &lt;style/&gt; 的组件，例子如下：</p>
+<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/mixin.png" alt=""></p>
 <hr>
 <h1 id="pages-文件夹"><a href="#pages-文件夹" class="headerlink" title="pages 文件夹"></a>pages 文件夹</h1><blockquote>
 <p>pages: 放置主要页面的组件。例如登录页、用户信息页等。通常是这里的组件本身写入一些结构，再引入通用模块组件，形成完整的页面</p>
 </blockquote>
-<p>这里面就是会被插入根组件的 <router-view/> 节点里的文件，根据路由变化，根组件渲染不同的文件。</p>
+<p>这里面就是会被插入根组件的 ‘<router-view>‘ 节点里的文件，根据路由变化，根组件渲染不同的文件。</router-view></p>
 <p>都是单文件组件，没有特殊的结构，就不放图了。</p>
 <hr>
 <h1 id="router-文件夹"><a href="#router-文件夹" class="headerlink" title="router 文件夹"></a>router 文件夹</h1><blockquote>
@@ -256,20 +263,20 @@
 </blockquote>
 <p>1、如果项目结构不是很复杂，多是父子组件的通信，可以使用 props 传递数据，$emit 和 on 事件通信，store 文件夹里就只需创建 js 文件。</p>
 <p>结构如下：</p>
-<p><img src="store.png" alt=""></p>
+<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/store.png" alt=""></p>
 <p>2、反之，主要使用 vuex 来传递数据和通信的话，需要按照模块来划分 modules 。store 文件夹里除了有index.js 和全局相关的 js 文件外，还有 modules 文件夹， 在 modules 文件夹里根据模块创建对应的 js 文件，导出，最后在 store 文件夹下一级的 index.js 里导入。</p>
 <p>store 结构如下：</p>
-<p><img src="store-vuex.png" alt=""></p>
+<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/store-vuex.png" alt=""></p>
 <p>modules 结构如下：</p>
-<p><img src="store-modules.png" alt=""></p>
+<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/store-modules.png" alt=""></p>
 <p>sign-in.js:</p>
-<p><img src="sign-in.png" alt=""></p>
+<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/sign-in.png" alt=""></p>
 <p>index.js:</p>
-<p><img src="index.png" alt=""></p>
+<p><img src="/2018/01/30/vue-项目总结一组件开发的配置和例子/index.png" alt=""></p>
 <blockquote>
 <p>要注意的是，使用 modules 分割模块后，组件里获取 state 时要指明对应的 modules。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">computed: &#123;</span><br><span class="line">  ...mapState(&#123;</span><br><span class="line">    data: state =&gt; state.signIn.data,  //sign-in.js 里的 state</span><br><span class="line">    user: state =&gt; state.user    //index.js 里的 state</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 </blockquote>
-</style></template></p>
+
       
 
       
