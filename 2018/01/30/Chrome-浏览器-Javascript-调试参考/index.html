@@ -6,19 +6,33 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 威的个人博客</title>
+  <title>Chrome 浏览器 Javascript 调试参考 | 威的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前端，对新技术有更大的热情">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="威的个人博客">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="此文章翻译自 https://developers.google.com/web/tools/chrome-devtools/javascript/reference， 是对 chrome 下调试 javascript 的工具和方法介绍。 调试 js 需要结合浏览器断点操作，具体可见我的上一篇文章：https://segmentfault.com/a/1190000012344181。">
+<meta name="keywords" content="chrome,调试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome 浏览器 Javascript 调试参考">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/index.html">
 <meta property="og:site_name" content="威的个人博客">
-<meta property="og:description" content="前端，对新技术有更大的热情">
+<meta property="og:description" content="此文章翻译自 https://developers.google.com/web/tools/chrome-devtools/javascript/reference， 是对 chrome 下调试 javascript 的工具和方法介绍。 调试 js 需要结合浏览器断点操作，具体可见我的上一篇文章：https://segmentfault.com/a/1190000012344181。">
 <meta property="og:locale" content="zh">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/icons.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/callstack.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/trace.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/restart-frame.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/blackbox.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/blackbox-callstack.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/blackbox-pattern.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/thread.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/scope.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/watch.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/formatter.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/edit.png">
+<meta property="og:updated_time" content="2018-01-30T07:55:39.407Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="威的个人博客">
-<meta name="twitter:description" content="前端，对新技术有更大的热情">
+<meta name="twitter:title" content="Chrome 浏览器 Javascript 调试参考">
+<meta name="twitter:description" content="此文章翻译自 https://developers.google.com/web/tools/chrome-devtools/javascript/reference， 是对 chrome 下调试 javascript 的工具和方法介绍。 调试 js 需要结合浏览器断点操作，具体可见我的上一篇文章：https://segmentfault.com/a/1190000012344181。">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/icons.png">
   
     <link rel="alternative" href="/atom.xml" title="威的个人博客" type="application/atom+xml">
   
@@ -154,78 +168,149 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Chrome-浏览器-Javascript-调试参考" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/30/前端跨域的处理/" class="archive-article-date">
-  	<time datetime="2018-01-30T07:56:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/30/前端跨域的处理/">前端跨域的处理</a>
+    <h1 class="article-title" itemprop="name">
+      Chrome 浏览器 Javascript 调试参考
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">跨域</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/30/Chrome-浏览器-Javascript-调试参考/" class="archive-article-date">
+        
+        <a href="/2018/01/30/Chrome-浏览器-Javascript-调试参考/" class="archive-article-date">
   	<time datetime="2018-01-30T07:45:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-30</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/30/Chrome-浏览器-Javascript-调试参考/">Chrome 浏览器 Javascript 调试参考</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>此文章翻译自 <a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference，" target="_blank" rel="noopener">https://developers.google.com/web/tools/chrome-devtools/javascript/reference，</a> 是对 chrome 下调试 javascript 的工具和方法介绍。</p>
+<p>调试 js 需要结合浏览器断点操作，具体可见我的上一篇文章：<a href="https://segmentfault.com/a/1190000012344181。" target="_blank" rel="noopener">https://segmentfault.com/a/1190000012344181。</a><br><a id="more"></a></p>
+<hr>
+<h1 id="1、调试图标概览"><a href="#1、调试图标概览" class="headerlink" title="1、调试图标概览"></a>1、调试图标概览</h1><p>打上断点之后，需要操作对应图标进行调试，图标如下：</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/icons.png" alt=""></p>
+<p>从左到右分别是：</p>
+<p><strong>Pause/Resume script execution</strong>：暂停/恢复脚本执行（程序执行到下一断点停止）。</p>
+<p><strong>Step over next function call</strong>：执行到下一步的函数调用（执行当前断点所在行，跳到下一行且暂停）。</p>
+<p><strong>Step into next function call</strong>：进入当前函数，在第一行暂停。</p>
+<p><strong>Step out of current function</strong>：跳出当前执行函数。</p>
+<p><strong>Deactive/Active all breakpoints</strong>：关闭/开启所有断点（不会取消）。</p>
+<p><strong>Pause on exceptions</strong>：异常情况自动断点设置。</p>
+<hr>
+<h1 id="Pause-Resume-script-execution（-F8）"><a href="#Pause-Resume-script-execution（-F8）" class="headerlink" title="Pause/Resume script execution（ F8）"></a><strong>Pause/Resume script execution（ F8）</strong></h1><p>在断点暂停后，点击恢复脚本执行，直到下一个断点为止。</p>
+<p>长按图标，会出现灰色的播放按钮，鼠标移上去再松开左键，会忽略所有的断点，强制渲染完整的页面。</p>
+<hr>
+<h1 id="Step-over-next-function-call-（F10）"><a href="#Step-over-next-function-call-（F10）" class="headerlink" title="Step over next function call （F10）"></a><strong>Step over next function call （F10）</strong></h1><p>当在一行代码中暂停，代码里包含一个与正在调试的问题无关的函数时，可以点击此图标直接解析该函数，而不是进入函数内部逐行执行debug操作。</p>
+<p>例如，当你在 debug 以下代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateHeader</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> day = <span class="keyword">new</span> <span class="built_in">Date</span>().getDay();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> name = getName(); <span class="comment">// A</span></span><br><span class="line"></span><br><span class="line">    updateName(name); <span class="comment">// D</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> name = app.first + <span class="string">' '</span> + app.last; <span class="comment">// B</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> name; <span class="comment">// C</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>假设现在是在 A 处暂停。点击 ‘跳过下个函数调用’ 图标，浏览器会解析被跳过的函数里的所有代码（这里是 B 和 C），然后在 D 处再次暂停。</p>
+<hr>
+<h1 id="Step-into-next-function-call-（-F11）"><a href="#Step-into-next-function-call-（-F11）" class="headerlink" title="Step into next function call （ F11）"></a><strong>Step into next function call （ F11）</strong></h1><p>当断点找到了要 debug 的确切函数，点击图标进入此函数内部，逐行查看分析里面的变量值和方法。</p>
+<p>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateHeader</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> day = <span class="keyword">new</span> <span class="built_in">Date</span>().getDay();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> name = getName(); <span class="comment">// A</span></span><br><span class="line"></span><br><span class="line">    updateName(name); <span class="comment">// D</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> name = app.first + <span class="string">' '</span> + app.last; <span class="comment">// B</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> name; <span class="comment">// C</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时在 A 处打点暂停了，而 A 处就是与问题相关的函数，点击进入函数里，会在 B 处暂停，再次点击会在 C 处暂停，同时 B 处会显示 ‘name’ 变量的值。</p>
+<hr>
+<h1 id="Step-out-of-current-function-（Shift-F8）"><a href="#Step-out-of-current-function-（Shift-F8）" class="headerlink" title="Step out of current function （Shift + F8）"></a><strong>Step out of current function （Shift + F8）</strong></h1><p>进入到一个与正在 debug 的问题无关的函数后，可以点击此图标解析函数剩下的代码，跳出函数到下一行。</p>
+<p>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateHeader</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> day = <span class="keyword">new</span> <span class="built_in">Date</span>().getDay();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> name = getName(); <span class="comment">// A</span></span><br><span class="line"></span><br><span class="line">    updateName(name); <span class="comment">// D</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> name = app.first + <span class="string">' '</span> + app.last; <span class="comment">// B</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> name; <span class="comment">// C</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在在 B 处暂停，step out 之后，浏览器解析 getName() 函数剩下的代码（C），然后在 D 处再次暂停。</p>
+<hr>
+<h1 id="2、调试区域其他功能概览"><a href="#2、调试区域其他功能概览" class="headerlink" title="2、调试区域其他功能概览"></a>2、调试区域其他功能概览</h1><h1 id="Run-all-code-up-to-a-certain-line"><a href="#Run-all-code-up-to-a-certain-line" class="headerlink" title="Run all code up to a certain line"></a><strong>Run all code up to a certain line</strong></h1><p>如果你在 debug 一个很长的函数，里面包含了很多与问题无关的代码，需要区分出来。</p>
+<p>首先在函数里设置第一个断点，执行至暂停，然后，有三种方法 debug ：</p>
+<pre><code>1、使用 step into function 逐行解析查看结果，会浪费不少时间；
 
-        <div class="article-info info-on-right">
-          
+2、根据结果判断哪些是无用的代码，越过它们再设置下一个断点，使用 resume script 执行到下一个断点；
+
+3、根据结果判断哪些是无用的代码，在下一个需要暂停的地方，右键行数，选择 “continue to here”，浏览器会直接解析到那一行并暂停，推荐的方法。
+</code></pre><hr>
+<h1 id="View-the-current-call-stack"><a href="#View-the-current-call-stack" class="headerlink" title="View the current call stack"></a><strong>View the current call stack</strong></h1><p>在一行代码里暂停时，可以在 Call Stack 面板查看是哪些栈将你带到了当前断点（到达当前函数调用了哪些函数）。如果不是在一行代码里暂停， Call Stack 面板是没有内容的。</p>
+<p>如果要查看异步函数，可以勾选 Async 。（在 windows 版本中没有此选项，默认显示异步函数）。</p>
+<p>点击函数会跳到此函数调用的地方。蓝色箭头是当前查看的函数。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/callstack.png" alt=""></p>
+<hr>
+<h1 id="Copy-stack-trace"><a href="#Copy-stack-trace" class="headerlink" title="Copy stack trace"></a><strong>Copy stack trace</strong></h1><p>在 Call Stack 面板里右键，选择 Copy stack trace 可以将面板里的 stack 信息复制到 clipboard。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/trace.png" alt=""></p>
+<p>复制的信息格式如下（函数名称、在代码里的行数）：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">getNumber1(get-started.js:<span class="number">35</span>)</span><br><span class="line"></span><br><span class="line">inputsAreEmpty(get-started.js:<span class="number">22</span>)</span><br><span class="line"></span><br><span class="line">onClick(get-started.js:<span class="number">15</span>)</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="Restart-the-top-function-of-the-call-stack"><a href="#Restart-the-top-function-of-the-call-stack" class="headerlink" title="Restart the top function of the call stack"></a><strong>Restart the top function of the call stack</strong></h1><p>在调试函数的过程中，想回到函数的开头重新 debug 的时候，可以在 Call Stack 面板中对应的函数上右键，选择 Restart Frame 而无需在开头打断点。Call Stack 面板里是断点函数以及所涉及到的其他函数，最顶端的函数是当前的断点函数。</p>
+<p>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> product = <span class="number">0</span>; <span class="comment">// B</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line"></span><br><span class="line">    product += i;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> product; <span class="comment">// A</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在在 A 处暂停，点击 Restart Frame 之后，会在 B 处暂停。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/restart-frame.png" alt=""></p>
+<hr>
+<h1 id="Ignore-a-script-or-pattern-of-scripts"><a href="#Ignore-a-script-or-pattern-of-scripts" class="headerlink" title="Ignore a script or pattern of scripts"></a><strong>Ignore a script or pattern of scripts</strong></h1><p>在 debug 过程中，可以选择忽略部分脚本，不在 Call Stack 中显示，在 step into function 的时候也不会进入被忽略的脚本。</p>
+<p>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">animate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    prepare();</span><br><span class="line"></span><br><span class="line">    lib.doFancyStuff(); <span class="comment">// A</span></span><br><span class="line"></span><br><span class="line">    render();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>A是你确认与当前问题无关的第三方库，那就可以将它关入黑盒子里忽略掉。</p>
+<p>在编辑区操作： 在 Source Tab 中双击打开文件 -&gt; 在文件编辑区右键，选择 Blackbox script 。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/blackbox.png" alt=""></p>
+<p>在Call Stack 面板操作： 在 Call Stack 面板中找到对应的脚本 -&gt; 右键选择 Blackbox script 。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/blackbox-callstack.png" alt=""></p>
+<p>在控制台设置黑盒： 控制台右上角找到 ‘Customize and control DevTools’ 图标（或按F1） -&gt; 选择 Blackboxing tab -&gt; 点击 Add pattern -&gt;  在对话框中输入脚本名字或脚本名字的正则表达式 -&gt; 点击 Add。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/blackbox-pattern.png" alt=""></p>
+<hr>
+<h1 id="Change-thread-context"><a href="#Change-thread-context" class="headerlink" title="Change thread context"></a><strong>Change thread context</strong></h1><p>在网站有 web workers 或者 service workers 线程的时候，需要分别查看主线程和这两个线程的 context ，可以在 Threads 面板切换。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/thread.png" alt=""></p>
+<p>上图蓝色箭头处是当前线程的 context ， 可以点击切换其他线程。</p>
+<hr>
+<h1 id="View-and-edit-local-closure-and-global-properties"><a href="#View-and-edit-local-closure-and-global-properties" class="headerlink" title="View and edit local, closure, and global properties"></a><strong>View and edit local, closure, and global properties</strong></h1><p>在断点暂停时，可以在 Scope 面板里查看和编辑局部、闭包和全局范围内的属性和变量的值。不会显示不可枚举的属性。</p>
+<p>双击一个属性值可以输入新的值。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/scope.png" alt=""></p>
+<hr>
+<h1 id="Run-snippets-of-debug-code-from-any-page"><a href="#Run-snippets-of-debug-code-from-any-page" class="headerlink" title="Run snippets of debug code from any page"></a><strong>Run snippets of debug code from any page</strong></h1><p>如果在调试中，需要一次次在控制台输入相同的内容的话，可以使用 Snippets（代码片段） 功能减少重复劳动。代码片段是您在DevTools中编写、存储和运行的可执行脚本。</p>
+<p>Snippets 是全局的，在浏览器的所有标签页都能找到和运行。</p>
+<p>具体可查看 <a href="https://developers.google.com/web/tools/chrome-devtools/snippets。" target="_blank" rel="noopener">https://developers.google.com/web/tools/chrome-devtools/snippets。</a></p>
+<hr>
+<h1 id="Watch-the-values-of-custom-JavaScript-expressions"><a href="#Watch-the-values-of-custom-JavaScript-expressions" class="headerlink" title="Watch the values of custom JavaScript expressions"></a><strong>Watch the values of custom JavaScript expressions</strong></h1><p>在 debug 过程中，如果希望重点观察某些变量的值（而不是在 Scope 面板里层层点开），可以加入 Watch 面板。Watch 面板里的值会在执行代码时自动刷新。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/watch.png" alt=""></p>
+<p>‘+’ 图标创建新的 expression；右边是刷新图标，手动刷新变量的值；鼠标移动到变量上，在右侧会出现删除图标。</p>
+<hr>
+<h1 id="Make-a-minified-file-readable"><a href="#Make-a-minified-file-readable" class="headerlink" title="Make a minified file readable"></a><strong>Make a minified file readable</strong></h1><p>可以将最小化了的代码还原成对人友好的形式。</p>
+<p>点击代码编辑区域左下角的 ‘{}’ 图标。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/formatter.png" alt=""></p>
+<hr>
+<h1 id="Edit-a-script"><a href="#Edit-a-script" class="headerlink" title="Edit a script"></a><strong>Edit a script</strong></h1><p>如果要尝试修复 bug ， 不需要切换到编辑器修改，再刷新当前页面。你可以直接在代码编辑区域修改代码然后保存看看修改后的效果。如果是最小化了的代码，可以先还原成对人友好的格式。</p>
+<p>tips：确定修改方向之后，记得在编辑器代码里修改保存。</p>
+<p>操作： 修改代码 -&gt; 按 Command + S （mac）或 Ctrl + S （windows, Linux）保存修改 -&gt; 查看效果。</p>
+<p><img src="/2018/01/30/Chrome-浏览器-Javascript-调试参考/edit.png" alt=""></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢打赏<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weChat.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -241,229 +326,115 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/01/30/Chrome-浏览器-Javascript-调试参考/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/30/使用断点调试代码/" class="archive-article-date">
-  	<time datetime="2018-01-30T07:33:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/01/30/前端跨域的处理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          前端跨域的处理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/30/使用断点调试代码/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用断点调试代码</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/30/使用断点调试代码/">使用断点调试代码</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">chrome</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">断点</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/30/vue-2-x-的-v-bind-指令的-prop-事件修饰符详解/" class="archive-article-date">
-  	<time datetime="2018-01-30T07:21:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/30/vue-2-x-的-v-bind-指令的-prop-事件修饰符详解/">vue 2.x 的 v-bind 指令的 .prop 事件修饰符详解</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vue</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">修饰符</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/30/vue-项目总结一组件开发的配置和例子/" class="archive-article-date">
-  	<time datetime="2018-01-30T03:21:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/30/vue-项目总结一组件开发的配置和例子/">vue 项目总结一组件开发的配置和例子</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vue</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">项目结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/30/vue-项目总结一文件夹结构配置/" class="archive-article-date">
-  	<time datetime="2018-01-30T03:06:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/30/vue-项目总结一文件夹结构配置/">vue 项目总结一文件夹结构配置</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vue</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">项目结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/29/Vue-nextTick-的原理和用途/" class="archive-article-date">
-  	<time datetime="2018-01-29T09:53:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-29</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/29/Vue-nextTick-的原理和用途/">Vue.nextTick 的原理和用途</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vue</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">nextTick</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -486,8 +457,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
