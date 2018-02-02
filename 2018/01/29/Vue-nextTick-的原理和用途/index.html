@@ -242,7 +242,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">showsou()&#123;</span><br><span class="line">  <span class="keyword">this</span>.showit = <span class="literal">true</span> <span class="comment">//修改 v-show</span></span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">"keywords"</span>).focus()  <span class="comment">//在第一个 tick 里，获取不到输入框，自然也获取不到焦点</span></span><br><span class="line">&#125;</span><br><span class="line">修改为：</span><br><span class="line"></span><br><span class="line">showsou()&#123;</span><br><span class="line">  <span class="keyword">this</span>.showit = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">this</span>.$nextTick(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// DOM 更新了</span></span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"keywords"</span>).focus()</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>例子2：</p>
 <p>点击获取元素宽度。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;p ref=&quot;myWidth&quot; v-if=&quot;showMe&quot;&gt;&#123;&#123; message &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;button @click=&quot;getMyWidth&quot;&gt;获取p元素宽度&lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">getMyWidth() &#123;</span><br><span class="line">    this.showMe = true;</span><br><span class="line">    //this.message = this.$refs.myWidth.offsetWidth;</span><br><span class="line">    //报错 TypeError: this.$refs.myWidth is undefined</span><br><span class="line">    this.$nextTick(()=&gt;&#123;</span><br><span class="line">        //dom元素更新后执行，此时能拿到p元素的属性</span><br><span class="line">        this.message = this.$refs.myWidth.offsetWidth;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"app"</span>&gt;</span><br><span class="line">    &lt;p ref=<span class="string">"myWidth"</span> v-<span class="keyword">if</span>=<span class="string">"showMe"</span>&gt;&#123;&#123; message &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;button @click=<span class="string">"getMyWidth"</span>&gt;获取p元素宽度&lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">getMyWidth() &#123;</span><br><span class="line">    <span class="keyword">this</span>.showMe = <span class="literal">true</span>;</span><br><span class="line">    <span class="regexp">//</span><span class="keyword">this</span>.message = <span class="keyword">this</span>.$refs.myWidth.offsetWidth;</span><br><span class="line">    <span class="regexp">//</span>报错 TypeError: <span class="keyword">this</span>.$refs.myWidth <span class="keyword">is</span> <span class="literal">undefined</span></span><br><span class="line">    <span class="keyword">this</span>.$nextTick(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="regexp">//</span>dom元素更新后执行，此时能拿到p元素的属性</span><br><span class="line">        <span class="keyword">this</span>.message = <span class="keyword">this</span>.$refs.myWidth.offsetWidth;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>例子3：</p>
 <p>使用 swiper 插件通过 ajax 请求图片后的滑动问题。</p>
 <h2 id="实例理解-nextTick-应用"><a href="#实例理解-nextTick-应用" class="headerlink" title="实例理解 nextTick 应用"></a>实例理解 nextTick 应用</h2><p>下面的例子来自 <a href="https://www.cnblogs.com/hity-tt/p/6729118.html，" target="_blank" rel="noopener">https://www.cnblogs.com/hity-tt/p/6729118.html，</a> 稍有改动。各位可以复制运行一遍，加深理解。（vue 的代码不能高亮真是蛋疼）</p>
@@ -253,37 +253,6 @@
 
       
 
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢打赏<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/alipay.png">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/weChat.png">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -509,10 +478,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">调试</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">断点</a>
               </li>
              
@@ -521,11 +486,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">修饰符</a>
+                <a href="javascript:void(0)" class="js-tag color4">nextTick</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">nextTick</a>
+                <a href="javascript:void(0)" class="js-tag color3">调试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">修饰符</a>
               </li>
              
               <li class="article-tag-list-item">
